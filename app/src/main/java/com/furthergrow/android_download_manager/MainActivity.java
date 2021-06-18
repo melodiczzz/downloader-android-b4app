@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     String link= "";
         String size= "";
         String finished= "";
-        String downloadId= "";
+        String downloadIds= "";
         String objectId= "";
 
     @Override
@@ -168,14 +168,14 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                         link = String.valueOf(objects.get(i).get("link"));
                         finished = String.valueOf(objects.get(i).get("finished"));
                         //size = String.valueOf(objects.get(i).get("size"));
-                        downloadId = String.valueOf(objects.get(i).get("downloadId"));
+                        downloadIds = String.valueOf(objects.get(i).get("downloadId"));
                         objectId = String.valueOf(objects.get(i).getObjectId());
 
                         if(finished.equals("true")){
 
                             Toast.makeText(MainActivity.this, String.valueOf(finished), Toast.LENGTH_SHORT).show();
 
-                        } else if(downloadId.equals("false")){
+                        } else if(downloadIds.equals("false")){
                             Toast.makeText(MainActivity.this, String.valueOf(link) + " and " + String.valueOf(objectId) , Toast.LENGTH_SHORT).show();
                             downloadFile(link, objectId);
                         }
@@ -571,10 +571,10 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                         link = String.valueOf(objects.get(i).get("link"));
                         finished = String.valueOf(objects.get(i).get("finished"));
                         size = String.valueOf(objects.get(i).get("size"));
-                        downloadId = String.valueOf(objects.get(i).get("downloadId"));
+                        downloadIds = String.valueOf(objects.get(i).get("downloadId"));
                         objectId = String.valueOf(objects.get(i).getObjectId());
 
-                        if(downloadId != null && downloadId.equals(String.valueOf(id))){
+                        if(downloadIds != null && downloadIds.equals(String.valueOf(id))){
 
                             ParseQuery<ParseObject> query3 = ParseQuery.getQuery("DownloadList");
                 query3.getInBackground(objectId, new GetCallback<ParseObject>() {
