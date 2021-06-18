@@ -484,6 +484,10 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                             if (e == null) {
                                 // Update the fields we want to
                                 object.put("progress", String.valueOf(values[0]));
+                                object.put("size", String.valueOf(bytesIntoHumanReadable(Long.parseLong(values[1]))));
+                                if(String.valueOf(values[0]).equals("100")){
+                                    object.put("finished", "true");
+                                }
                                 object.saveInBackground();
                             }
                         }
@@ -527,7 +531,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     BroadcastReceiver onComplete=new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            final long id=intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID,-1);
+            long id=intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID,-1);
             boolean comp=downloadAdapter.ChangeItemWithStatus("Completed",id);
 
             if(comp){
