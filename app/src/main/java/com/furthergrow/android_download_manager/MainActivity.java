@@ -179,14 +179,14 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
                         Toast.makeText(MainActivity.this, String.valueOf(link) + " and " + String.valueOf(objectId) , Toast.LENGTH_SHORT).show();
 
-                        // if(finished.equals("true")){
+                        if(finished.equals("true")){
 
-                        //     Toast.makeText(MainActivity.this, String.valueOf(finished), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, String.valueOf(finished), Toast.LENGTH_SHORT).show();
 
-                        // } else if(downloadIds.equals("false")){
-                        //     Toast.makeText(MainActivity.this, String.valueOf(link) + " and " + String.valueOf(objectId) , Toast.LENGTH_SHORT).show();
-                        //     downloadFile(link, objectId);
-                        // }
+                        } else if(downloadIds.equals("false")){
+                            Toast.makeText(MainActivity.this, String.valueOf(link) + " and " + String.valueOf(objectId) , Toast.LENGTH_SHORT).show();
+                            downloadFile(link, objectId);
+                        }
                         
                       
                     }
@@ -337,6 +337,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
         //this model to Parse
         if(objectId.equals("false")){
+            Toast.makeText(MainActivity.this, "Object id is False" , Toast.LENGTH_SHORT).show();
 
         } else {
 
@@ -346,7 +347,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                     public void done(ParseObject object, ParseException e) {
                         if (e == null) {
                             // Update the fields we want to
-                            object.put("downloadId", String.valueOf(downloadModel.getDownloadId()));
+                            object.put("downloadId", String.valueOf(downloadId));
                             object.saveInBackground();
                             Toast.makeText(MainActivity.this, "Data Updated", Toast.LENGTH_SHORT).show();
                         }
