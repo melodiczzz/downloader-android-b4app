@@ -73,10 +73,10 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     Realm realm;
 
     String link= "";
-        String size= "";
-        String finished= "";
-        String downloadIds= "";
-        String objectId= "";
+    String size= "";
+    String finished= "";
+    String downloadIds= "";
+    String objectId= "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,43 +97,43 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         });
 
         fetchWebList();
-        List<DownloadModel> downloadModelsLocal=getAllDownloads();
-        if(downloadModelsLocal!=null){
-            if(downloadModelsLocal.size()>0){
-                downloadModels.addAll(downloadModelsLocal);
-                for(int i=0;i<downloadModels.size();i++){
-                    if(downloadModels.get(i).getStatus().equalsIgnoreCase("Pending") || downloadModels.get(i).getStatus().equalsIgnoreCase("Running") || downloadModels.get(i).getStatus().equalsIgnoreCase("Downloading")){
-                        DownloadStatusTask downloadStatusTask=new DownloadStatusTask(downloadModels.get(i), "false");
-                        runTask(downloadStatusTask,""+downloadModels.get(i).getDownloadId());
-                    }
-                }
-            }
-        }
-        downloadAdapter=new DownloadAdapter(MainActivity.this,downloadModels,MainActivity.this);
-        data_list.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-        data_list.setAdapter(downloadAdapter);
+        // List<DownloadModel> downloadModelsLocal=getAllDownloads();
+        // if(downloadModelsLocal!=null){
+        //     if(downloadModelsLocal.size()>0){
+        //         downloadModels.addAll(downloadModelsLocal);
+        //         for(int i=0;i<downloadModels.size();i++){
+        //             if(downloadModels.get(i).getStatus().equalsIgnoreCase("Pending") || downloadModels.get(i).getStatus().equalsIgnoreCase("Running") || downloadModels.get(i).getStatus().equalsIgnoreCase("Downloading")){
+        //                 DownloadStatusTask downloadStatusTask=new DownloadStatusTask(downloadModels.get(i), "false");
+        //                 runTask(downloadStatusTask,""+downloadModels.get(i).getDownloadId());
+        //             }
+        //         }
+        //     }
+        // }
+        // downloadAdapter=new DownloadAdapter(MainActivity.this,downloadModels,MainActivity.this);
+        // data_list.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        // data_list.setAdapter(downloadAdapter);
 
-        Intent intent=getIntent();
-        if(intent!=null){
-            String action=intent.getAction();
-            String type=intent.getType();
-            if(Intent.ACTION_SEND.equals(action) && type!=null){
-                if(type.equalsIgnoreCase("text/plain")){
-                    handleTextData(intent);
-                }
-                else if(type.startsWith("image/")){
-                    handleImage(intent);
-                }
-                else if(type.equalsIgnoreCase("application/pdf")){
-                    handlePdfFile(intent);
-                }
-            }
-            else if(Intent.ACTION_SEND_MULTIPLE.equals(action) && type!=null){
-                if(type.startsWith("image/")){
-                    handleMultipleImage(intent);
-                }
-            }
-        }
+        // Intent intent=getIntent();
+        // if(intent!=null){
+        //     String action=intent.getAction();
+        //     String type=intent.getType();
+        //     if(Intent.ACTION_SEND.equals(action) && type!=null){
+        //         if(type.equalsIgnoreCase("text/plain")){
+        //             handleTextData(intent);
+        //         }
+        //         else if(type.startsWith("image/")){
+        //             handleImage(intent);
+        //         }
+        //         else if(type.equalsIgnoreCase("application/pdf")){
+        //             handlePdfFile(intent);
+        //         }
+        //     }
+        //     else if(Intent.ACTION_SEND_MULTIPLE.equals(action) && type!=null){
+        //         if(type.startsWith("image/")){
+        //             handleMultipleImage(intent);
+        //         }
+        //     }
+        // }
 
     }
 
@@ -159,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
+                Toast.makeText(MainActivity.this, String.valueOf(objects.size()) + " and " , Toast.LENGTH_SHORT).show();
                 if (e == null) {
                     for (int i = 0; i < objects.size(); i++) {
 
@@ -166,20 +167,26 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                         // get Auth generate key from database row
                         // userid = objects.get(i).getObjectId();
                         // Get other column data
+
                         link = String.valueOf(objects.get(i).get("link"));
                         finished = String.valueOf(objects.get(i).get("finished"));
                         //size = String.valueOf(objects.get(i).get("size"));
+                        // if (!String.valueOf(objects.get(i).get("downloadId"))
                         downloadIds = String.valueOf(objects.get(i).get("downloadId"));
                         objectId = String.valueOf(objects.get(i).getObjectId());
 
-                        if(finished.equals("true")){
 
-                            Toast.makeText(MainActivity.this, String.valueOf(finished), Toast.LENGTH_SHORT).show();
 
-                        } else if(downloadIds.equals("false")){
-                            Toast.makeText(MainActivity.this, String.valueOf(link) + " and " + String.valueOf(objectId) , Toast.LENGTH_SHORT).show();
-                            downloadFile(link, objectId);
-                        }
+                        Toast.makeText(MainActivity.this, String.valueOf(link) + " and " + String.valueOf(objectId) , Toast.LENGTH_SHORT).show();
+
+                        // if(finished.equals("true")){
+
+                        //     Toast.makeText(MainActivity.this, String.valueOf(finished), Toast.LENGTH_SHORT).show();
+
+                        // } else if(downloadIds.equals("false")){
+                        //     Toast.makeText(MainActivity.this, String.valueOf(link) + " and " + String.valueOf(objectId) , Toast.LENGTH_SHORT).show();
+                        //     downloadFile(link, objectId);
+                        // }
                         
                       
                     }
