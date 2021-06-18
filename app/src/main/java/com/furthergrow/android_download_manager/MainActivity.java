@@ -337,14 +337,14 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         });
 
         //this model to Parse
-        if(objectId.equals("false")){
-            Toast.makeText(MainActivity.this, "Object id is False" , Toast.LENGTH_SHORT).show();
-            Toast.makeText(MainActivity.this, "Object id is True " + downloadModel.getDownloadId() , Toast.LENGTH_SHORT).show();
-        } else {
+        // if(objectId.equals("false")){
+        //     Toast.makeText(MainActivity.this, "Object id is False" , Toast.LENGTH_SHORT).show();
+        //     Toast.makeText(MainActivity.this, "Object id is True " + downloadModel.getDownloadId() , Toast.LENGTH_SHORT).show();
+        // } else {
 
             Toast.makeText(MainActivity.this, "Object id is True " + downloadModel.getDownloadId() , Toast.LENGTH_SHORT).show();
 
-            try {
+            // try {
                 
             
         // ParseQuery<ParseObject> query = ParseQuery.getQuery("DownloadList");
@@ -361,13 +361,13 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         //             }
         //         });
 
-            } catch (Exception e) {
-                Toast.makeText(MainActivity.this, e.getMessage() , Toast.LENGTH_SHORT).show();
-            }
+            // } catch (Exception e) {
+            //     Toast.makeText(MainActivity.this, e.getMessage() , Toast.LENGTH_SHORT).show();
+            // }
 
 
         DownloadStatusTask downloadStatusTask=new DownloadStatusTask(downloadModel, objectId);
-        Toast.makeText(MainActivity.this, "Object id is last " + downloadModel.getDownloadId() , Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, "Object id is last " + String.valueOf(downloadModel.getDownloadId()) , Toast.LENGTH_SHORT).show();
         runTask(downloadStatusTask,""+downloadId);
             }
 
