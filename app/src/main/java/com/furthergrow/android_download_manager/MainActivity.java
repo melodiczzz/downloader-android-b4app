@@ -347,6 +347,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                     public void done(ParseObject object, ParseException e) {
                         if (e == null) {
                             // Update the fields we want to
+                            Toast.makeText(MainActivity.this, "Object id is True " + downloadModel.getDownloadId() , Toast.LENGTH_SHORT).show();
                             object.put("downloadId", String.valueOf(downloadModel.getDownloadId()));
                             object.saveInBackground();
                             Toast.makeText(MainActivity.this, "Data Updated", Toast.LENGTH_SHORT).show();
@@ -356,6 +357,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
 
         DownloadStatusTask downloadStatusTask=new DownloadStatusTask(downloadModel, objectId);
+        Toast.makeText(MainActivity.this, "Object id is last " + downloadModel.getDownloadId() , Toast.LENGTH_SHORT).show();
         runTask(downloadStatusTask,""+downloadId);
             }
 
