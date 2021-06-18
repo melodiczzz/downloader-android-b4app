@@ -162,6 +162,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
             public void done(List<ParseObject> objects, ParseException e) {
                 if (e == null) {
                     for (int i = 0; i < objects.size(); i++) {
+
+                        Toast.makeText(MainActivity.this, String.valueOf(objects.size()) + " and " , Toast.LENGTH_SHORT).show();
                         // get Auth generate key from database row
                         // userid = objects.get(i).getObjectId();
                         // Get other column data
