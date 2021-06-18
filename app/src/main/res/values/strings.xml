@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Android_Download_Manager</string>
+    <string name="back4app_server_url">https://parseapi.back4app.com/</string>
+    <!-- Change the following strings as required -->
+    <string name="back4app_app_id">96IF9A8Dqw4cSdJo4LgdTkdD9s2EziWKyf61hUPk</string>
+    <string name="back4app_client_key">Y3XOcpKSe0dIdMA5S2RpdzziRTIErrYFYqYFaFKX</string>
+</resources>
