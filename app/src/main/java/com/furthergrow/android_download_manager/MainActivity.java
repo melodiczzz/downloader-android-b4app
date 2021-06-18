@@ -97,43 +97,43 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         });
 
         fetchWebList();
-        // List<DownloadModel> downloadModelsLocal=getAllDownloads();
-        // if(downloadModelsLocal!=null){
-        //     if(downloadModelsLocal.size()>0){
-        //         downloadModels.addAll(downloadModelsLocal);
-        //         for(int i=0;i<downloadModels.size();i++){
-        //             if(downloadModels.get(i).getStatus().equalsIgnoreCase("Pending") || downloadModels.get(i).getStatus().equalsIgnoreCase("Running") || downloadModels.get(i).getStatus().equalsIgnoreCase("Downloading")){
-        //                 DownloadStatusTask downloadStatusTask=new DownloadStatusTask(downloadModels.get(i), "false");
-        //                 runTask(downloadStatusTask,""+downloadModels.get(i).getDownloadId());
-        //             }
-        //         }
-        //     }
-        // }
-        // downloadAdapter=new DownloadAdapter(MainActivity.this,downloadModels,MainActivity.this);
-        // data_list.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-        // data_list.setAdapter(downloadAdapter);
+        List<DownloadModel> downloadModelsLocal=getAllDownloads();
+        if(downloadModelsLocal!=null){
+            if(downloadModelsLocal.size()>0){
+                downloadModels.addAll(downloadModelsLocal);
+                for(int i=0;i<downloadModels.size();i++){
+                    if(downloadModels.get(i).getStatus().equalsIgnoreCase("Pending") || downloadModels.get(i).getStatus().equalsIgnoreCase("Running") || downloadModels.get(i).getStatus().equalsIgnoreCase("Downloading")){
+                        DownloadStatusTask downloadStatusTask=new DownloadStatusTask(downloadModels.get(i), "false");
+                        runTask(downloadStatusTask,""+downloadModels.get(i).getDownloadId());
+                    }
+                }
+            }
+        }
+        downloadAdapter=new DownloadAdapter(MainActivity.this,downloadModels,MainActivity.this);
+        data_list.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        data_list.setAdapter(downloadAdapter);
 
-        // Intent intent=getIntent();
-        // if(intent!=null){
-        //     String action=intent.getAction();
-        //     String type=intent.getType();
-        //     if(Intent.ACTION_SEND.equals(action) && type!=null){
-        //         if(type.equalsIgnoreCase("text/plain")){
-        //             handleTextData(intent);
-        //         }
-        //         else if(type.startsWith("image/")){
-        //             handleImage(intent);
-        //         }
-        //         else if(type.equalsIgnoreCase("application/pdf")){
-        //             handlePdfFile(intent);
-        //         }
-        //     }
-        //     else if(Intent.ACTION_SEND_MULTIPLE.equals(action) && type!=null){
-        //         if(type.startsWith("image/")){
-        //             handleMultipleImage(intent);
-        //         }
-        //     }
-        // }
+        Intent intent=getIntent();
+        if(intent!=null){
+            String action=intent.getAction();
+            String type=intent.getType();
+            if(Intent.ACTION_SEND.equals(action) && type!=null){
+                if(type.equalsIgnoreCase("text/plain")){
+                    handleTextData(intent);
+                }
+                else if(type.startsWith("image/")){
+                    handleImage(intent);
+                }
+                else if(type.equalsIgnoreCase("application/pdf")){
+                    handlePdfFile(intent);
+                }
+            }
+            else if(Intent.ACTION_SEND_MULTIPLE.equals(action) && type!=null){
+                if(type.startsWith("image/")){
+                    handleMultipleImage(intent);
+                }
+            }
+        }
 
     }
 
@@ -278,6 +278,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     private void downloadFile(String url, String objectId) {
         String filename= URLUtil.guessFileName(url,null,null);
         String downloadPath= Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+        Toast.makeText(MainActivity.this, "DownloadFile:  " + objectId , Toast.LENGTH_SHORT).show();
 
         File file=new File(downloadPath,filename);
 
@@ -341,6 +342,9 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
         } else {
 
+            try {
+                
+            
         ParseQuery<ParseObject> query = ParseQuery.getQuery("DownloadList");
                 query.getInBackground(objectId, new GetCallback<ParseObject>() {
                     @Override
@@ -354,6 +358,10 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                         }
                     }
                 });
+
+            } catch (Exception e) {
+                Toast.makeText(MainActivity.this, e.getMessage() , Toast.LENGTH_SHORT).show();
+            }
 
 
         DownloadStatusTask downloadStatusTask=new DownloadStatusTask(downloadModel, objectId);
@@ -457,6 +465,10 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                      }
                     downloadAdapter.changeItem(downloadModel.getDownloadId());
 
+                    try {
+                        
+                   
+
                     ParseQuery<ParseObject> query = ParseQuery.getQuery("DownloadList");
                     query.getInBackground(objectId, new GetCallback<ParseObject>() {
                         @Override
@@ -468,6 +480,10 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                             }
                         }
                     });
+
+                } catch (Exception e) {
+                    Toast.makeText(MainActivity.this, "OnProgressUpdate: " + e.getMessage()  , Toast.LENGTH_SHORT).show();
+                }
 
                 }
            });
