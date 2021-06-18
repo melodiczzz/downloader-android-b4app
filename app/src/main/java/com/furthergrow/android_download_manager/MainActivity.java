@@ -371,7 +371,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         runTask(downloadStatusTask,""+downloadId);
             }
 
-    }
+    
 
     @Override
     public void onCLickItem(String file_path) {
