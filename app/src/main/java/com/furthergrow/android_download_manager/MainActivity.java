@@ -376,7 +376,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         Toast.makeText(MainActivity.this, "Object id is last " + String.valueOf(downloadModel.getDownloadId()) , Toast.LENGTH_SHORT).show();
         runTask(downloadStatusTask,""+downloadId);
             }
-
+        }
     
 
     @Override
