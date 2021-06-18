@@ -147,14 +147,13 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
      * */
     private void fetchWebList()
     {
-       // progressBar.setVisibility(View.VISIBLE);
-        //webModels.clear();
-        // downloadModels.clear();
-
-        
-
         // Table object query
         ParseQuery<ParseObject> query = ParseQuery.getQuery("DownloadList");
+
+        try {
+            
+        
+
         //query.setLimit(2);
         query.addDescendingOrder(ParseObject.KEY_CREATED_AT);
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -182,57 +181,17 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                             downloadFile(link, objectId);
                         }
                         
-                        // bind these data to model
-                        // webModels.add(new WebModel(link, finished, size, downloadId));
-                       // progressBar.setVisibility(View.GONE);
+                      
                     }
 
-                    // if (webModels.isEmpty())
-                    // {
-                    //     //progressBar.setVisibility(View.GONE);
-                    //     Toast.makeText(MainActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
-                    // }
-
-                    // int web_size = webModels.size();
-                    // int realm_size = downloadModels.size();
-                    // if(web_size > realm_size){
-
-                    // }
-                    // set adapter & binding data & set to recyclerview
-                    // adapter = new UserAdapter(userlist, MainActivity.this);
-                    // binding.recyclerview.setAdapter(adapter);
-                    // adapter.notifyDataSetChanged();
-
-                    // Delete call back implementation
-                    // adapter.setOnItemClickListener(new UserAdapter.OnItemClickListener() {
-                    //     @Override
-                    //     public void onItemClick(final int position) {
-
-                    //         ParseQuery<ParseObject> query = ParseQuery.getQuery("UserRegistration");
-                    //         query.getInBackground(userlist.get(position).getUserid(), new GetCallback<ParseObject>() {
-                    //             @Override
-                    //             public void done(ParseObject object, ParseException e) {
-
-                    //                 if (e == null)
-                    //                 {
-                    //                     try {
-                    //                         object.delete();
-                    //                         object.saveInBackground();
-                    //                         Toast.makeText(MainActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
-                    //                         startActivity(new Intent(getApplicationContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-                    //                     } catch (ParseException ex) {
-                    //                         ex.printStackTrace();
-                    //                     }
-
-                    //                 }
-                    //             }
-                    //         });
-
-                    //     }
-                    // });
                 }
             }
         });
+
+    } catch (Exception e) {
+        //TODO: handle exception
+        Toast.makeText(MainActivity.this, String.valueOf(e.getMessage()) , Toast.LENGTH_SHORT).show();
+    }
     }
 
 
@@ -381,11 +340,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                         if (e == null) {
                             // Update the fields we want to
                             object.put("downloadId", String.valueOf(downloadModel.getDownloadId()));
-                            // object.put("Email", binding.email.getText().toString());
-                            // All other fields will remain the same
                             object.saveInBackground();
                             Toast.makeText(MainActivity.this, "Data Updated", Toast.LENGTH_SHORT).show();
-                            // startActivity(new Intent(getApplicationContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                         }
                     }
                 });
@@ -498,11 +454,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                             if (e == null) {
                                 // Update the fields we want to
                                 object.put("progress", String.valueOf(values[0]));
-                                // object.put("Email", binding.email.getText().toString());
-                                // All other fields will remain the same
                                 object.saveInBackground();
-                                // Toast.makeText(UpdateActivity.this, "Data Updated", Toast.LENGTH_SHORT).show();
-                                // startActivity(new Intent(getApplicationContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                             }
                         }
                     });
@@ -567,9 +519,6 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
             public void done(List<ParseObject> objects, ParseException e) {
                 if (e == null) {
                     for (int i = 0; i < objects.size(); i++) {
-                        // get Auth generate key from database row
-                        // userid = objects.get(i).getObjectId();
-                        // Get other column data
                         link = String.valueOf(objects.get(i).get("link"));
                         finished = String.valueOf(objects.get(i).get("finished"));
                         size = String.valueOf(objects.get(i).get("size"));
@@ -585,11 +534,9 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                         if (e == null) {
                             // Update the fields we want to
                             object.put("finished", String.valueOf("true"));
-                            // object.put("Email", binding.email.getText().toString());
-                            // All other fields will remain the same
+
                             object.saveInBackground();
                             Toast.makeText(MainActivity.this, "Data Updated", Toast.LENGTH_SHORT).show();
-                            // startActivity(new Intent(getApplicationContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                         }
                     }
                 });
