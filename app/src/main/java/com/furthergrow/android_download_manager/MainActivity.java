@@ -48,6 +48,7 @@ import com.parse.ParseObject;
 import com.parse.SaveCallback;
 //read imports
 import com.parse.GetCallback;
+import com.parse.FindCallback;
 import com.parse.ParseQuery;
 
 //update imports
@@ -71,6 +72,12 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     List<WebModel> webModels = new ArrayList<>();
     Realm realm;
 
+    String link= "";
+        String size= "";
+        String finished= "";
+        String downloadId= "";
+        String objectId= "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,13 +96,14 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
             }
         });
 
+        fetchWebList();
         List<DownloadModel> downloadModelsLocal=getAllDownloads();
         if(downloadModelsLocal!=null){
             if(downloadModelsLocal.size()>0){
                 downloadModels.addAll(downloadModelsLocal);
                 for(int i=0;i<downloadModels.size();i++){
                     if(downloadModels.get(i).getStatus().equalsIgnoreCase("Pending") || downloadModels.get(i).getStatus().equalsIgnoreCase("Running") || downloadModels.get(i).getStatus().equalsIgnoreCase("Downloading")){
-                        DownloadStatusTask downloadStatusTask=new DownloadStatusTask(downloadModels.get(i));
+                        DownloadStatusTask downloadStatusTask=new DownloadStatusTask(downloadModels.get(i), "false");
                         runTask(downloadStatusTask,""+downloadModels.get(i).getDownloadId());
                     }
                 }
@@ -139,15 +147,11 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
      * */
     private void fetchWebList()
     {
-        progressBar.setVisibility(View.VISIBLE);
-        webModels.clear();
+       // progressBar.setVisibility(View.VISIBLE);
+        //webModels.clear();
         // downloadModels.clear();
 
-        String link;
-        String size;
-        String finished;
-        String downloadId;
-        String objectId;
+        
 
         // Table object query
         ParseQuery<ParseObject> query = ParseQuery.getQuery("DownloadList");
@@ -163,29 +167,32 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                         // Get other column data
                         link = String.valueOf(objects.get(i).get("link"));
                         finished = String.valueOf(objects.get(i).get("finished"));
-                        size = String.valueOf(objects.get(i).get("size"));
+                        //size = String.valueOf(objects.get(i).get("size"));
                         downloadId = String.valueOf(objects.get(i).get("downloadId"));
                         objectId = String.valueOf(objects.get(i).getObjectId());
 
                         if(finished.equals("true")){
 
-                        } else if(downloadId == "false"){
+                            Toast.makeText(MainActivity.this, String.valueOf(finished), Toast.LENGTH_SHORT).show();
+
+                        } else if(downloadId.equals("false")){
+                            Toast.makeText(MainActivity.this, String.valueOf(link) + " and " + String.valueOf(objectId) , Toast.LENGTH_SHORT).show();
                             downloadFile(link, objectId);
                         }
                         
                         // bind these data to model
                         // webModels.add(new WebModel(link, finished, size, downloadId));
-                        progressBar.setVisibility(View.GONE);
+                       // progressBar.setVisibility(View.GONE);
                     }
 
-                    if (webModels.isEmpty())
-                    {
-                        progressBar.setVisibility(View.GONE);
-                        Toast.makeText(MainActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
-                    }
+                    // if (webModels.isEmpty())
+                    // {
+                    //     //progressBar.setVisibility(View.GONE);
+                    //     Toast.makeText(MainActivity.this, "No Data Found", Toast.LENGTH_SHORT).show();
+                    // }
 
-                    int web_size = webModels.size();
-                    int realm_size = downloadModels.size();
+                    // int web_size = webModels.size();
+                    // int realm_size = downloadModels.size();
                     // if(web_size > realm_size){
 
                     // }
@@ -371,11 +378,11 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                     public void done(ParseObject object, ParseException e) {
                         if (e == null) {
                             // Update the fields we want to
-                            object.put("downloadId", String.valueOf(downloadId));
+                            object.put("downloadId", String.valueOf(downloadModel.getDownloadId()));
                             // object.put("Email", binding.email.getText().toString());
                             // All other fields will remain the same
                             object.saveInBackground();
-                            Toast.makeText(UpdateActivity.this, "Data Updated", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Data Updated", Toast.LENGTH_SHORT).show();
                             // startActivity(new Intent(getApplicationContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                         }
                     }
@@ -532,7 +539,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     BroadcastReceiver onComplete=new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            long id=intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID,-1);
+            final long id=intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID,-1);
             boolean comp=downloadAdapter.ChangeItemWithStatus("Completed",id);
 
             if(comp){
@@ -547,17 +554,13 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
                 //update finished
                 
-        String link;
-        String size;
-        String finished;
-        String downloadId;
-        String objectId;
+        
 
         // Table object query
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("DownloadList");
+        ParseQuery<ParseObject> query2 = ParseQuery.getQuery("DownloadList");
         //query.setLimit(2);
-        query.addDescendingOrder(ParseObject.KEY_CREATED_AT);
-        query.findInBackground(new FindCallback<ParseObject>() {
+        query2.addDescendingOrder(ParseObject.KEY_CREATED_AT);
+        query2.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
                 if (e == null) {
@@ -571,10 +574,10 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                         downloadId = String.valueOf(objects.get(i).get("downloadId"));
                         objectId = String.valueOf(objects.get(i).getObjectId());
 
-                        if(downloadId.equals(String.valueOf(id))){
+                        if(downloadId != null && downloadId.equals(String.valueOf(id))){
 
-                            ParseQuery<ParseObject> query = ParseQuery.getQuery("DownloadList");
-                query.getInBackground(objectId, new GetCallback<ParseObject>() {
+                            ParseQuery<ParseObject> query3 = ParseQuery.getQuery("DownloadList");
+                query3.getInBackground(objectId, new GetCallback<ParseObject>() {
                     @Override
                     public void done(ParseObject object, ParseException e) {
                         if (e == null) {
@@ -583,7 +586,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                             // object.put("Email", binding.email.getText().toString());
                             // All other fields will remain the same
                             object.saveInBackground();
-                            Toast.makeText(UpdateActivity.this, "Data Updated", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Data Updated", Toast.LENGTH_SHORT).show();
                             // startActivity(new Intent(getApplicationContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                         }
                     }
