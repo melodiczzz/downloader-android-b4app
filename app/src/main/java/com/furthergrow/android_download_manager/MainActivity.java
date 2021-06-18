@@ -532,7 +532,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     BroadcastReceiver onComplete=new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            long id=intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID,-1);
+            final long id=intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID,-1);
             boolean comp=downloadAdapter.ChangeItemWithStatus("Completed",id);
 
             if(comp){
