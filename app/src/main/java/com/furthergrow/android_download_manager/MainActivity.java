@@ -347,7 +347,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
                     public void done(ParseObject object, ParseException e) {
                         if (e == null) {
                             // Update the fields we want to
-                            object.put("downloadId", String.valueOf(downloadId));
+                            object.put("downloadId", String.valueOf(""+downloadId));
                             object.saveInBackground();
                             Toast.makeText(MainActivity.this, "Data Updated", Toast.LENGTH_SHORT).show();
                         }
