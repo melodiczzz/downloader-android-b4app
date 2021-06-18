@@ -46,7 +46,7 @@ public class WebModel {
         return downloadId;
     }
 
-    public void setDownloadId(long downloadId) {
+    public void setDownloadId(String downloadId) {
         this.downloadId = downloadId;
     }
 
