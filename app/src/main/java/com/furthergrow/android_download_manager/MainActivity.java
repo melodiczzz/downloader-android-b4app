@@ -85,6 +85,12 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         //Started Realm db
         realm=Realm.getDefaultInstance();
 
+        if(!checkPermission()){
+            requestPermission();
+            Toast.makeText(this, "Please Allow Permission to Open File", Toast.LENGTH_SHORT).show();
+            // return;
+        }
+
         registerReceiver(onComplete,new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
         Button add_download_list=findViewById(R.id.add_download_list);
         RecyclerView data_list=findViewById(R.id.data_list);
@@ -337,33 +343,33 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         });
 
         //this model to Parse
-        // if(objectId.equals("false")){
-        //     Toast.makeText(MainActivity.this, "Object id is False" , Toast.LENGTH_SHORT).show();
-        //     Toast.makeText(MainActivity.this, "Object id is True " + downloadModel.getDownloadId() , Toast.LENGTH_SHORT).show();
-        // } else {
+        if(objectId.equals("false")){
+            Toast.makeText(MainActivity.this, "Object id is False" , Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Object id is True " + downloadModel.getDownloadId() , Toast.LENGTH_SHORT).show();
+        } else {
 
             Toast.makeText(MainActivity.this, "Object id is True " + downloadModel.getDownloadId() , Toast.LENGTH_SHORT).show();
 
-            // try {
+            try {
                 
             
-        // ParseQuery<ParseObject> query = ParseQuery.getQuery("DownloadList");
-        //         query.getInBackground(objectId, new GetCallback<ParseObject>() {
-        //             @Override
-        //             public void done(ParseObject object, ParseException e) {
-        //                 if (e == null) {
-        //                     // Update the fields we want to
-        //                     Toast.makeText(MainActivity.this, "Object id is True " + downloadModel.getDownloadId() , Toast.LENGTH_SHORT).show();
-        //                     object.put("downloadId", String.valueOf(downloadModel.getDownloadId()));
-        //                     object.saveInBackground();
-        //                     Toast.makeText(MainActivity.this, "Data Updated", Toast.LENGTH_SHORT).show();
-        //                 }
-        //             }
-        //         });
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("DownloadList");
+                query.getInBackground(objectId, new GetCallback<ParseObject>() {
+                    @Override
+                    public void done(ParseObject object, ParseException e) {
+                        if (e == null) {
+                            // Update the fields we want to
+                            Toast.makeText(MainActivity.this, "Object id is True " + downloadModel.getDownloadId() , Toast.LENGTH_SHORT).show();
+                            object.put("downloadId", String.valueOf(downloadModel.getDownloadId()));
+                            object.saveInBackground();
+                            Toast.makeText(MainActivity.this, "Data Updated", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 
-            // } catch (Exception e) {
-            //     Toast.makeText(MainActivity.this, e.getMessage() , Toast.LENGTH_SHORT).show();
-            // }
+            } catch (Exception e) {
+                Toast.makeText(MainActivity.this, e.getMessage() , Toast.LENGTH_SHORT).show();
+            }
 
 
         DownloadStatusTask downloadStatusTask=new DownloadStatusTask(downloadModel, objectId);
